@@ -31,7 +31,7 @@ def custom_openapi():
     app.openapi_schema = openapi_schema
     return app.openapi_schema
 
-app.openapi = custom_openapi
+#app.openapi = custom_openapi
 
 #  Register routers
 app.include_router(auth_router, prefix="/auth")

@@ -1,44 +1,45 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException
 from app.models import UserMessage
 from app.database import save_message, get_history
 from app.agents import get_agent
-from app.auth_router import get_current_user
 import uuid
 
 chat_router = APIRouter()
 sessions = {}
 
-AVAILABLE_MODELS = ["llama3-8b-8192", "llama3-70b-8192", "gemma-7b-it"]
+AVAILABLE_MODELS = [
+    "llama3-8b-8192",
+    "llama3-70b-8192",
+    "gemma-7b-it",
+    "llama-3.3-70b-versatile",      # جدید
+    "llama-3.1-8b-instant",         # جدید
+    "gemma2-9b-it",                 # جدید
+    "deepseek-r1-distill-llama-70b"  # اگر فقط می‌خوای preview تست کنی
+]
 
 @chat_router.get("/available_models")
 def get_available_models():
-    return {"models": AVAILABLE_MODELS}
+    return {
+        "models": AVAILABLE_MODELS,
+        "description": "Select one of the supported LLMs for your session."
+    }
 
 @chat_router.post("/start_chat")
-def start_chat(
-    model_name: str,
-    user: str = Depends(get_current_user)
-):
+def start_chat(model_name: str):
     if model_name not in AVAILABLE_MODELS:
         raise HTTPException(status_code=400, detail=f"Model '{model_name}' is not available.")
     
     session_id = str(uuid.uuid4())
     sessions[session_id] = {
-        "agent": get_agent(model_name),
-        "user": user
+        "agent": get_agent(model_name)
     }
     return {"session_id": session_id}
 
 @chat_router.post("/send_message")
-def send_message(
-    message: UserMessage,
-    user: str = Depends(get_current_user)
-):
+def send_message(message: UserMessage):
     session = sessions.get(message.session_id)
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
-    if session["user"] != user:
-        raise HTTPException(status_code=403, detail="Unauthorized access to this session")
 
     agent = session["agent"]
     save_message(message.session_id, "user", message.content)
@@ -56,14 +57,9 @@ def send_message(
     return {"response": output}
 
 @chat_router.get("/get_history/{session_id}")
-def get_chat_history(
-    session_id: str,
-    user: str = Depends(get_current_user)
-):
+def get_chat_history(session_id: str):
     session = sessions.get(session_id)
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
-    if session["user"] != user:
-        raise HTTPException(status_code=403, detail="Unauthorized access to this session")
 
     return get_history(session_id)

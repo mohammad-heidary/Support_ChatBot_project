@@ -4,7 +4,7 @@ uvicorn[standard]
 sqlite-utils
 langchain
 langchain_community
-tavily-python
+langchain-tavily
 langgraph
 groq
 langchain_groq
