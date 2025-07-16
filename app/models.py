@@ -1,6 +1,6 @@
 ### app/models.py
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, TypedDict
 
 class Message(BaseModel):
     role: str  # 'user' or 'bot'
@@ -8,9 +8,16 @@ class Message(BaseModel):
 
 class ChatSession(BaseModel):
     session_id: str
-    model_name: Optional[str] = ["llama3-8b-8192", "llama3-70b-8192", "gemma-7b-it"]
+    model_name: Optional[str]
     history: List[Message] = []
 
 class UserMessage(BaseModel):
     session_id: str
     content: str
+
+class ModelAction(BaseModel):
+    action: str 
+    model_name: str | None = None
+
+class DidarInput(TypedDict):
+    query: str

@@ -16,10 +16,10 @@ groq_key = os.getenv("GROQ_API_KEY")
 tavily_key = os.getenv("TAVILY_API_KEY")
 didar_key = os.getenv('DIDAR_API_KEY')
 
+
 def search_didar_cases(query: str) -> str:
     response = requests.get(
-    f"https://api.didar.me/v1/cases?search={query}&apikey={didar_key}")
-
+        f"https://app.didar.me/api/contact/save?apikey={didar_key}")
     if response.status_code != 200:
         return "❗ خطا در دریافت اطلاعات از دیدار."
     cases = response.json()
@@ -27,21 +27,22 @@ def search_didar_cases(query: str) -> str:
         return "موردی پیدا نشد."
     return "\n".join([f"{c['title']} - {c['status']}" for c in cases[:3]])
 
+search_didar_tool = Tool.from_function(
+    name="search_didar_cases",
+    description="جستجوی درخواست‌های مشتریان در سامانه دیدار. ورودی باید یک رشته جستجو باشد.",
+    func=search_didar_cases
+)
+
+
 # You can swap "groq" with any supported model (like "mixtral")
 def get_agent(model_name: str):
     llm = ChatGroq(model=model_name, api_key=groq_key)
     
-    llm = llm.with_config(system_message="شما یک دستیار ساده پشتیبانی هستید.")
+    llm = llm.with_config(system_message="""
+    شما یک دستیار فارسی‌زبان هستید که با استفاده از ابزارهای موجود مانند جستجو در دیدار و وب به کاربران کمک می‌کنید.
+    همیشه پاسخ‌ها را به زبان فارسی بنویس.
+    """)
 
-    
-    tools = [
-        Tool.from_function(
-            name="search_didar_cases",
-            description="جستجوی درخواست‌های مشتریان در سامانه دیدار",
-            func=search_didar_cases ),TavilySearchResults(
-    max_results=3,
-    include_answer=True,
-    include_raw_content=True,
-    include_images=False)]
+    tools = [search_didar_tool, TavilySearchResults(max_results=3)]
 
     return create_react_agent(llm, tools=tools)
