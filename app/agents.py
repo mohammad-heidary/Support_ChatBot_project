@@ -15,5 +15,8 @@ tavily_key = os.getenv("TAVILY_API_KEY")
 # You can swap "groq" with any supported model (like "mixtral")
 def get_agent(model_name: str):
     llm = ChatGroq(model=model_name, api_key = groq_key)
+    llm = llm.with_config(system_message="""
+شما یک بات پشتیبانی هوشمند هستید که به سوالات مشتریان درباره خدمات شرکت، شرایط ثبت‌نام، قیمت‌ها و زمان پشتیبانی پاسخ می‌دهید.
+""")
     tools = []
     return create_react_agent(llm, tools=tools)

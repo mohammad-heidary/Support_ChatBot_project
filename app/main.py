@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from app.chat_router import chat_router
 from app.auth_router import auth_router
+from app.routes import chat_widget
 
 app = FastAPI(title="Smart Support Chatbot")
 
@@ -35,3 +36,4 @@ app.openapi = custom_openapi
 #  Register routers
 app.include_router(auth_router, prefix="/auth")
 app.include_router(chat_router, prefix="/chat")
+app.include_router(chat_widget.router)
