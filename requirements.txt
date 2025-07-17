@@ -11,3 +11,4 @@ langchain_groq
 python-jose 
 passlib[bcrypt]
 python-multipart
+Jinja2
