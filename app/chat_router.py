@@ -12,10 +12,10 @@ AVAILABLE_MODELS = [
     "llama3-8b-8192",
     "llama3-70b-8192",
     "gemma-7b-it",
-    "llama-3.3-70b-versatile",      # new
-    "llama-3.1-8b-instant",         # new
-    "gemma2-9b-it",                 # new
-    "deepseek-r1-distill-llama-70b"  # if you want to test
+    "llama-3.3-70b-versatile",      # جدید
+    "llama-3.1-8b-instant",         # جدید
+    "gemma2-9b-it",                 # جدید
+    "deepseek-r1-distill-llama-70b"  # اگر فقط می‌خوای preview تست کنی
 ]
 
 @chat_router.post("/model_action")
