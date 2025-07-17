@@ -8,7 +8,7 @@ chat_router = APIRouter()
 sessions = {}
 
 DEFAULT_MODEL = "llama-3.1-8b-instant"
-WELCOME_MESSAGE = "سلام! چطور می‌تونم کمک‌تون کنم؟ 😊"
+WELCOME_MESSAGE = "hi! how can i help you? 😊"
 
 @chat_router.post("/send_message")
 def send_message(message: UserMessage):
@@ -36,7 +36,7 @@ def send_message(message: UserMessage):
 
     if user_message_count >= 5:
         return {
-            "response": "⚠️ شما فقط می‌توانید ۵ پیام در این سشن ارسال کنید. لطفاً سشن جدیدی آغاز نمایید."
+            "response": "⚠️ You can only send 5 messages in this session. Please start a new session."
         }
 
     # Continue the usual process
@@ -49,7 +49,7 @@ def send_message(message: UserMessage):
         ai_message = response["messages"][-1]
         output = ai_message.content
     except Exception as e:
-        output = f"❗ خطا در پردازش پاسخ: {str(e)}"
+        output = f"❗ Error processing response: {str(e)}"
 
     save_message(session_id, "bot", output)
     return {"response": output}

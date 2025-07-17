@@ -21,15 +21,15 @@ def search_didar_cases(query: str) -> str:
     response = requests.get(
         f"https://app.didar.me/api/contact/save?apikey={didar_key}")
     if response.status_code != 200:
-        return "❗ خطا در دریافت اطلاعات از دیدار."
+        return "❗ Error retrieving information from the meeting."
     cases = response.json()
     if not cases:
-        return "موردی پیدا نشد."
+        return "No items found."
     return "\n".join([f"{c['title']} - {c['status']}" for c in cases[:3]])
 
 search_didar_tool = Tool.from_function(
     name="search_didar_cases",
-    description="جستجوی درخواست‌های مشتریان در سامانه دیدار. ورودی باید یک رشته جستجو باشد.",
+    description="Search for customer requests in the Didar system. The input must be a search string.",
     func=search_didar_cases
 )
 
@@ -39,8 +39,8 @@ def get_agent(model_name: str):
     llm = ChatGroq(model=model_name, api_key=groq_key)
     
     llm = llm.with_config(system_message="""
-    شما یک دستیار فارسی‌زبان هستید که با استفاده از ابزارهای موجود مانند جستجو در دیدار و وب به کاربران کمک می‌کنید.
-    همیشه پاسخ‌ها را به زبان فارسی بنویس.
+You are a English-speaking assistant who helps users using available tools such as search in Didar api and website and the web.
+Always write answers in english.
     """)
 
     tools = [search_didar_tool, TavilySearchResults(max_results=3)]
