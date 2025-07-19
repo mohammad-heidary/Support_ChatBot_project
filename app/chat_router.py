@@ -7,7 +7,9 @@ import uuid
 chat_router = APIRouter()
 sessions = {}
 
-DEFAULT_MODEL = "llama-3.1-8b-instant"
+#DEFAULT_MODEL = "llama-3.1-8b-instant"
+DEFAULT_MODEL = "llama3-8b-8192"
+
 WELCOME_MESSAGE = "hi! how can i help you? 😊"
 
 @chat_router.post("/send_message")
@@ -16,18 +18,17 @@ def send_message(message: UserMessage):
     session = sessions.get(session_id)
 
     if not session:
-        session_id = message.session_id if message.session_id and message.session_id != "string" else str(uuid.uuid4())
-        sessions[session_id] = {
-            "agent": get_agent(DEFAULT_MODEL)}
-        session = sessions[session_id]
+    session_id = message.session_id if message.session_id and message.session_id != "string" else str(uuid.uuid4())
+    sessions[session_id] = {
+        "agent": get_agent(DEFAULT_MODEL)
+    }
+    session = sessions[session_id]
 
-        save_message(session_id, "bot", WELCOME_MESSAGE)
+    return {
+        "session_id": session_id,
+        "new_session": True
+    }
 
-        return {
-            "response": WELCOME_MESSAGE,
-            "session_id": session_id,
-            "new_session": True
-        }
 
 
     # Count the number of previous messages from the user

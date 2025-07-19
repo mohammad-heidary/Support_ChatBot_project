@@ -17,8 +17,25 @@ def signup(form_data: OAuth2PasswordRequestForm = Depends()):
 def login(form_data: OAuth2PasswordRequestForm = Depends()):
     if not verify_user(form_data.username, form_data.password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
+    
     token = create_access_token({"sub": form_data.username})
-    return {"access_token": token, "token_type": "bearer"}
+    
+    # Create a default session for this user
+    session_id = str(uuid.uuid4())
+    from app.agents import get_agent
+    from app.main import sessions, DEFAULT_MODEL, WELCOME_MESSAGE
+    sessions[session_id] = {"agent": get_agent(DEFAULT_MODEL)}
+    
+    from app.database import save_message
+    save_message(session_id, "bot", WELCOME_MESSAGE)
+
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "session_id": session_id,
+        "welcome": WELCOME_MESSAGE
+    }
+
 
 def get_current_user(token: str = Depends(oauth2_scheme)):
     user = decode_token(token)

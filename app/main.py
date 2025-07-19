@@ -36,4 +36,3 @@ def custom_openapi():
 #  Register routers
 app.include_router(auth_router, prefix="/auth")
 app.include_router(chat_router, prefix="/chat")
-app.include_router(chat_widget.router)
