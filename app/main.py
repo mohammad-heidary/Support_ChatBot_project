@@ -1,10 +1,20 @@
 ### app/main.py
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 from fastapi.openapi.utils import get_openapi
+
 from app.chat_router import chat_router
 from app.auth_router import auth_router
 
 app = FastAPI(title="Smart Support Chatbot")
+
+@app.get("/")
+def root():
+    return RedirectResponse("/docs") # or return a simple message
+
+@app.get("/favicon.ico")
+def favicon():
+    return {}
 
 #  Defining a security schema for Swagger UI
 def custom_openapi():
