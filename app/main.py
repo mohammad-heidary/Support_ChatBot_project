@@ -19,7 +19,7 @@ def favicon():
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://687f5fd579ca75ea5df61836--supportchatbotai.netlify.app"],  
+    allow_origins=["https://687f7594951ddf00081c0b47--supportchatbotai.netlify.app"],  
     allow_credentials=True,
     allow_methods=["*"],  
     allow_headers=["*"],  
