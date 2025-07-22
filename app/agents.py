@@ -13,7 +13,7 @@ load_dotenv()
 
 # Access the variables
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
-openrouter_base_url = os.getenv("OPPENROUTER_API_BASE") 
+openrouter_base_url = os.getenv("OPENROUTER_API_BASE") 
 
 tavily_key = os.getenv("TAVILY_API_KEY")
 didar_key = os.getenv('DIDAR_API_KEY')
@@ -53,9 +53,6 @@ def get_agent(model_name: str):
 You are a helpful assistant. Always respond in English and use tools when needed.
     """)
 
-    tools = [search_didar_tool, TavilySearchResults(max_results=3)]
-
-    return create_react_agent(llm, tools=tools)
     tools = [search_didar_tool, TavilySearchResults(max_results=3)]
 
     return create_react_agent(llm, tools=tools)
