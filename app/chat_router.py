@@ -10,10 +10,7 @@ import traceback
 chat_router = APIRouter()
 sessions = {}
 
-#DEFAULT_MODEL = "llama3-8b-8192"
-#DEFAULT_MODEL = "llama-3.1-8b-instant"
-#DEFAULT_MODEL = "gemma-7b-it"
-DEFAULT_MODEL = "mixtral-8x7b-32768"
+DEFAULT_MODEL = "mistralai/mistral-7b-instruct"
 
 WELCOME_MESSAGE = "hi! how can i help you? 😊"
 
