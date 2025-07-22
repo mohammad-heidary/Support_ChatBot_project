@@ -6,8 +6,7 @@ langchain
 langchain_community
 langchain-tavily
 langgraph
-groq
-langchain_groq
+openrouter langchain
 python-jose 
 passlib[bcrypt]
 python-multipart
