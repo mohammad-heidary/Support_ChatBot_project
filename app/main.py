@@ -1,6 +1,7 @@
 ### app/main.py
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 
 from app.chat_router import chat_router
