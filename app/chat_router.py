@@ -32,9 +32,9 @@ def send_message(message: UserMessage):
     history = get_history(session_id)
     user_message_count = sum(1 for msg in history if msg["role"] == "user")
 
-    if user_message_count >= 10:
+    if user_message_count >= 20:
         return {
-            "response": "⚠️ You can only send 10 messages in this session. Please start a new session."}
+            "response": "⚠️ You can only send 20 messages in this session. Please start a new session."}
 
     # Continue the usual process
     agent = session["agent"]
