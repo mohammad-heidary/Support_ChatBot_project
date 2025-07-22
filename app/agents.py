@@ -43,8 +43,15 @@ def get_agent(model_name: str):
         openai_api_base=openrouter_base_url)
 
     llm = llm.with_config(system_message="""
-You are a helpful assistant. Always respond in English and use tools when needed.
-    """)
+You are a smart and friendly support assistant named SupportBot. 
+Always respond to users in natural, fluent English. 
+Your job is to answer their questions clearly and helpfully.
+Do NOT return code examples unless explicitly asked.
+Use available tools like search when needed, and if the tool fails, apologize politely and suggest trying again later.
+
+Avoid technical language unless the user asks for it. 
+Start the first response with a warm greeting like "Hello! How can I help you today? 😊"
+""")
 
     tools = [search_didar_tool, TavilySearchResults(max_results=3)]
 
