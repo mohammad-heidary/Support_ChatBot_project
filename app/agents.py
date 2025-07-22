@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Access the variables
-openrouter_key = os.getenv("OPENROUTER_API_KEY")
+openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
 openrouter_base_url = "https://openrouter.ai/api/v1"  
 
 tavily_key = os.getenv("TAVILY_API_KEY")
