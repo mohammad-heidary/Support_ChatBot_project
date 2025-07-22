@@ -13,7 +13,7 @@ load_dotenv()
 
 # Access the variables
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
-openrouter_base_url = "https://openrouter.ai/api/v1"  
+openrouter_base_url = os.getenv("OPENAI_API_BASE") 
 
 tavily_key = os.getenv("TAVILY_API_KEY")
 didar_key = os.getenv('DIDAR_API_KEY')
