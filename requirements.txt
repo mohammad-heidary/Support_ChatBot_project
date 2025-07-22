@@ -6,7 +6,7 @@ langchain
 langchain_community
 langchain-tavily
 langgraph
-langchain-openrouter
+langchain-openai
 python-jose 
 passlib[bcrypt]
 python-multipart
