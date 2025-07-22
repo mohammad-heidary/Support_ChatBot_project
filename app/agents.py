@@ -40,14 +40,7 @@ def get_agent(model_name: str):
     llm = ChatOpenAI(
         model_name=model_name,
         openai_api_key=openrouter_api_key,
-        openai_api_base=openrouter_base_url,
-        model_kwargs={
-            "headers": {
-                "HTTP-Referer": "https://support-bot-didar.darkube.app",   # Enter your app domain
-                "X-Title": "SupportBot"
-            }
-        }
-    )
+        openai_api_base=openrouter_base_url)
 
     llm = llm.with_config(system_message="""
 You are a helpful assistant. Always respond in English and use tools when needed.
