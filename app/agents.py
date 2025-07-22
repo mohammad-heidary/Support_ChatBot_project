@@ -1,6 +1,6 @@
 ### app/agents.py
 from langgraph.prebuilt import create_react_agent
-from langchain_community.chat_models import ChatOpenRouter
+from langchain_openai import ChatOpenAI
 from langchain_community.tools import TavilySearchResults
 from langchain_core.tools import Tool 
 
@@ -13,6 +13,8 @@ load_dotenv()
 
 # Access the variables
 openrouter_key = os.getenv("OPENROUTER_API_KEY")
+openrouter_base_url = "https://openrouter.ai/api/v1"  
+
 tavily_key = os.getenv("TAVILY_API_KEY")
 didar_key = os.getenv('DIDAR_API_KEY')
 
@@ -35,11 +37,20 @@ search_didar_tool = Tool.from_function(
 
 
 def get_agent(model_name: str):
-    llm = ChatOpenRouter(model=model_name, openrouter_api_key=openrouter_key)
-    
+    llm = ChatOpenAI(
+        model_name=model_name,
+        openai_api_key=openrouter_api_key,
+        openai_api_base=openrouter_base_url,
+        model_kwargs={
+            "headers": {
+                "HTTP-Referer": "https://support-bot-didar.darkube.app",   # Enter your app domain
+                "X-Title": "SupportBot"
+            }
+        }
+    )
+
     llm = llm.with_config(system_message="""
-You are a English-speaking assistant who helps users using available tools such as search in Didar api and website and the web.
-Always write answers in english.
+You are a helpful assistant. Always respond in English and use tools when needed.
     """)
 
     tools = [search_didar_tool, TavilySearchResults(max_results=3)]
