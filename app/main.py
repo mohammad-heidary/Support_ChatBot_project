@@ -16,6 +16,14 @@ def root():
 def favicon():
     return {}
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://687f2b87768f0515575892d2--supportchatbotai.netlify.app/"],  
+    allow_credentials=True,
+    allow_methods=["*"],  
+    allow_headers=["*"],  
+)
+
 #  Defining a security schema for Swagger UI
 def custom_openapi():
     if app.openapi_schema:
