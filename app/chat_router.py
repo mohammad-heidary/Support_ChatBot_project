@@ -42,7 +42,7 @@ def send_message(message: UserMessage):
 
     response = agent.invoke({"messages": [{"role": "user", "content": content}]})
 
-    print (f"⚠️ Raw response: {response}")
+  #  print (f"⚠️ Raw response: {response}")
     try:
         ai_message = response["messages"][-1]
         output = ai_message.content
