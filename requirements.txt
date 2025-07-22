@@ -10,5 +10,4 @@ langchain-openrouter
 python-jose 
 passlib[bcrypt]
 python-multipart
-Jinja2
 streamlit
